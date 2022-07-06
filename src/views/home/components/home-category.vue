@@ -1,7 +1,7 @@
 <script lang="ts" setup name="HomeCategory">
 import useStore from '@/store';
 import { computed, ref } from 'vue';
-import Skeleton from '@/components/skeleton/index.vue';
+// import Skeleton from '@/components/skeleton/index.vue';
 const { category } = useStore()
 
 // 鼠标经过获取 id
@@ -30,8 +30,8 @@ const goods = computed(() => category.list.find(item => item.id === categoryId.v
         </template>
 
         <template v-else>
-          <Skeleton animated :width="70" :height="20" bg="rgba(255, 255, 255, 0.2)"/>
-          <Skeleton style="margin-left: 5px" animated :width="40" :height="20" bg="rgba(255, 255, 255, 0.2)"/>
+          <XtxSkeleton animated :width="70" :height="20" bg="rgba(255, 255, 255, 0.2)"/>
+          <XtxSkeleton style="margin-left: 5px" animated :width="40" :height="20" bg="rgba(255, 255, 255, 0.2)"/>
         </template>
       </li>
     </ul>
