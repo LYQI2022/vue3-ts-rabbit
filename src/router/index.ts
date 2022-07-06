@@ -1,11 +1,26 @@
 // 创建路由对象
 import { createRouter, createWebHashHistory } from 'vue-router'
 import Layout from '@/views/layout/index.vue'
+import Home from '@/views/home/index.vue'
 const router = createRouter({
   routes: [
     {
       path: '/',
-      component: Layout
+      component: Layout,
+      children: [
+        {
+          path: '', // 默认为 / 
+          component: Home
+        },
+        {
+          path: '/category/:id',
+          component: () => import('@/views/category/index.vue')
+        },
+        {
+          path: '/category/sub/:id',
+          component: () => import('@/views/category/sub.vue')
+        }
+      ]
     },
     {
       path: '/login',

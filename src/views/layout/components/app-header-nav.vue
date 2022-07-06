@@ -1,17 +1,23 @@
 <template>
   <ul class="app-header-nav">
     <li class="home"><RouterLink to="/">首页</RouterLink></li>
-    <li v-for="item in category.list" :key="item.id">
-      <router-link to="/">{{ item.name }}</router-link>
-      <div class="layer" v-if="item.children">
+    <li
+    @mouseenter="category.show(item.id)"
+    @mouseleave="category.hide(item.id)"
+    @click="category.hide(item.id)"
+    v-for="item in category.list" 
+    :key="item.id">
+    <!-- 如果没有数据，则让用户跳转到首页 -->
+      <router-link :to="item.id ? `/category/${ item.id }` : '/' ">{{ item.name }}</router-link>
+      <div class="layer" v-if="item.children" :class="{ open: item.open }" >
         <ul>
           <li v-for="sub in item.children" :key="sub.id">
-            <a href="#">
+            <router-link :to="`/category/sub/${ sub.id }`">
               <img
                 :src="sub.picture"
               />
               <p>{{ sub.name }}</p>
-            </a>
+            </router-link>
           </li>
         </ul>
       </div>
@@ -54,15 +60,29 @@ category.getAllCategory()
         color: @xtxColor;
         border-bottom: 1px solid @xtxColor;
       }
-      > .layer {
-        height: 132px;
-        opacity: 1;
-      }
+      // > .layer {
+      //   height: 132px;
+      //   opacity: 1;
+      // }
     }
+    // &.show {
+    //   > a {
+    //     color: @xtxColor;
+    //     border-bottom: 1px solid @xtxColor;
+    //   }
+    //   > .layer {
+    //     height: 132px;
+    //     opacity: 1;
+    //   }
+    // }
   }
 }
 // 新增样式
 .layer {
+  &.open {
+    height: 132px;
+    opacity: 1;
+  }
   width: 1240px;
   background-color: #fff;
   position: absolute;

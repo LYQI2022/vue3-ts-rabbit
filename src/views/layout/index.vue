@@ -2,19 +2,26 @@
 import AppTopnav from './components/app-topnav.vue';
 import AppHeader from './components/app-header.vue';
 import AppFooter from './components/app-footer.vue';
+import AppHeaderSticky from './components/app-header-sticky.vue';
 
 </script>
 
 
 <template>
-  <div>
     <AppTopnav/>
     <AppHeader/>
+    <AppHeaderSticky/>
+    <div class="app-body">
+      <!-- 路由出口 -->
+      <RouterView></RouterView>
+    </div>
     <AppFooter/>
-  </div>
 </template>
 
 
-<style scoped>
+<style scoped lang="less">
+.app-body {
+  min-height: 600px;
+}
 
 </style>
