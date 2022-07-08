@@ -11,11 +11,11 @@ import router from '@/router/index'
 import { createPinia } from 'pinia'
 const pinia = createPinia()
 
-import MyUI from './components'
+import MyUI from './components/index'
 const app = createApp(App)
 
 // createApp(App).use(router).use(pinia).mount('#app')
+app.use(MyUI)
 app.use(router)
 app.use(pinia)
-app.use(MyUI)
 app.mount('#app')

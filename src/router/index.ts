@@ -9,7 +9,7 @@ const router = createRouter({
       component: Layout,
       children: [
         {
-          path: '', // 默认为 / 
+          path: '', // 默认路由, 访问 / 等于先加载 Layout 再加载这个组件
           component: Home
         },
         {

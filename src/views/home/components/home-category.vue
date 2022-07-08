@@ -1,7 +1,7 @@
 <script lang="ts" setup name="HomeCategory">
 import useStore from '@/store';
 import { computed, ref } from 'vue';
-// import Skeleton from '@/components/skeleton/index.vue';
+// import XtxSkeleton from '@/components/skeleton/index.vue';
 const { category } = useStore()
 
 // 鼠标经过获取 id
