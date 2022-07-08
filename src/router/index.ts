@@ -19,7 +19,11 @@ const router = createRouter({
         {
           path: '/category/sub/:id',
           component: () => import('@/views/category/sub.vue')
-        }
+        },
+        {
+          path: 'playground',
+          component: () => import('@/views/playground/index.vue')
+        },
       ]
     },
     {

@@ -29,3 +29,20 @@ export interface BannerItem {
   hrefUrl: string;
   type: string;
 }
+
+export interface NewItem {
+  id: string;
+  name: string;
+  desc: string;
+  price: string;
+  picture: string;
+  discount?: number;
+  orderNum: number;
+}
+
+export interface HotItem {
+  id: string;
+  picture: string;
+  title: string;
+  alt: string;
+}

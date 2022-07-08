@@ -1,32 +1,72 @@
 <script lang="ts" setup name="XtxCarousel">
-import { BannerItem } from '@/types/data';
-import { ref } from 'vue';
+// 传统写法: 推荐
+// defineProps({
+//   slides: {
+//     type: Array,
+//     required: true
+//   }
+// })
 
-const props = defineProps<{
+import { BannerItem } from '@/types/data';
+import { onMounted, onUnmounted, ref } from 'vue';
+
+const {slides, autoplay = true, duration = 3000} = defineProps<{
   slides: BannerItem[]
+  autoplay?: boolean
+  duration?: number
 }>()
 
+// 淡入淡出的轮播图是轮播图界的青铜
+// 定义一个当前轮播图的索引
 const active = ref(0)
 
 const prev = () => {
   active.value--
   if (active.value < 0) {
-    active.value = props.slides.length - 1
+    active.value = slides.length - 1
   }
 }
 
 const next = () => {
   active.value++
-  if (active.value >= props.slides.length) {
+  if (active.value >= slides.length) {
     active.value = 0
   }
 }
+
+let timerId = -1
+
+// 鼠标进入轮播区域停止自动轮播
+const stop = () => {
+  clearInterval(timerId)
+}
+
+// 鼠标离开轮播区域重新开始自动轮播
+const start = () => {
+  timerId = window.setInterval(() => {
+    next()
+    // console.log('正在滚动中...')
+  }, duration)
+}
+
+// 组件挂载时开始定时器
+onMounted(() => {
+  start()
+})
+
+// 组件销毁时清除定时器
+onUnmounted(() => {
+  stop()
+})
+
 </script>
 
 <template>
-  <div class="xtx-carousel">
+  <div class="xtx-carousel" @mouseenter="stop" @mouseleave="start">
+    <!-- 图片结构 -->
     <ul class="carousel-body">
-      <li class="carousel-item" v-for="(item, index) in slides" :key="item.id" :class="{ fade: active === index }">
+      <!-- fade: 加上该类名的轮播图会显示, 其他会隐藏 -->
+      <li v-for="(item, index) in slides" :key="item.id" class="carousel-item" :class="{ fade: active === index }">
         <RouterLink to="/">
           <img
             :src="item.imgUrl"
@@ -37,16 +77,16 @@ const next = () => {
     </ul>
 
     <!-- 左右按钮 -->
-    <a href="javascript:;" class="carousel-btn prev"
-      ><i class="iconfont icon-angle-left" @click="prev"></i
+    <a href="javascript:;" class="carousel-btn prev" @click="prev"
+      ><i class="iconfont icon-angle-left"></i
     ></a>
-    <a href="javascript:;" class="carousel-btn next"
-      ><i class="iconfont icon-angle-right" @click="next"></i
+    <a href="javascript:;" class="carousel-btn next" @click="next"
+      ><i class="iconfont icon-angle-right"></i
     ></a>
 
     <!-- 小圆点 -->
     <div class="carousel-indicator">
-      <span :class="{ active: active === index}" v-for="(item, index) in slides" :key="item.id"></span>
+      <span v-for="(item, index) in slides" :key="item.id" :class="{ active: active === index }" @mouseenter="active = index"></span>
     </div>
   </div>
 </template>
