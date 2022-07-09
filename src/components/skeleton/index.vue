@@ -12,10 +12,12 @@ defineProps({
     type: Number,
     required: true,
   },
+  // 闪光动画
   animated: {
     type: Boolean,
     default: false,
   },
+  // 淡入淡出
   fade: {
     type: Boolean,
     default: false,

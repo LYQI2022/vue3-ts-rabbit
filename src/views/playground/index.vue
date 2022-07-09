@@ -2,6 +2,7 @@
   <div>
     玩耍的地方
   </div>
+  <button>切换按钮</button>
   <img ref="target" alt="">
 
 </template>
@@ -32,8 +33,15 @@ useIntersectionObserver(target, ([{ isIntersecting }]) => {
 
 </script>
 
-<style scoped>
-div {
-  height: 5000px
+<style scoped lang="less">
+.v-leave-from{
+  opacity: 1;
 }
+.v-leave-active{
+  transition: opacity 0.5s;
+}
+.v-leave-to{
+  opacity: 0;
+}
+
 </style>

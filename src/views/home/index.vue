@@ -1,9 +1,12 @@
 <script lang="ts" setup>
 import HomeBanner from './components/home-banner.vue'
 import HomeCategory from './components/home-category.vue'
-import HomePanel from './components/home-panel.vue';
+// import HomePanel from './components/home-panel.vue';
 import HomeNew from './components/home-new.vue';
 import HomeHot from './components/home-hot.vue';
+import HomeBrand from './components/home-brand.vue';
+import HomeProduct from './components/home-product.vue';
+import HomeSpecial from './components/home-special.vue';
 </script>
 
 <template>
@@ -35,13 +38,17 @@ import HomeHot from './components/home-hot.vue';
     <p>这里是很多人气推荐的图片</p>
   </HomePanel> -->
   <HomeHot></HomeHot>
+  <!-- 热门品牌 -->
+  <HomeBrand></HomeBrand>
+  <!-- 商品区域 -->
+   <HomeProduct></HomeProduct>
+   <!-- 最新专题 -->
+   <HomeSpecial></HomeSpecial>
   </div>
 </template>
 
 
 
 <style lang="less" scoped>
-.page-home {
-  height: 3000px;
-}
+
 </style>
