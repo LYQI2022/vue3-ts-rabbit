@@ -18,7 +18,7 @@ const { y } = useScroll(window)
 </script>
 
 <template>
-  <div class="app-header-sticky" :class="{show:y>=78}">
+  <div class="app-header-sticky" :class="{show: y >= 78}">
     <div class="container"  v-show="y >= 78">
       <RouterLink class="logo" to="/" />
       <AppHeaderNav />

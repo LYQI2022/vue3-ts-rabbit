@@ -24,6 +24,10 @@ const router = createRouter({
           path: 'playground',
           component: () => import('@/views/playground/index.vue')
         },
+        {
+          path: '/goods/:id',
+          component: () => import('@/views/goods/index.vue')
+        }
       ]
     },
     {
@@ -31,7 +35,12 @@ const router = createRouter({
       component: () => import('@/views/login/index.vue')
     }
   ],
-  history: createWebHashHistory()
+  history: createWebHashHistory(),
+  scrollBehavior: () => {
+    return {
+      top: 0,
+    }
+  },
 })
 
 export default router

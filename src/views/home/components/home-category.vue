@@ -7,6 +7,8 @@ const { category } = useStore()
 // 鼠标经过获取 id
 const categoryId = ref('')
 const hMouseenter = (id: string) => {
+  // 没有数据时鼠标移入会显示全部高亮，因为 id 都是 undefined，所以做出判断
+  if (!id) return
   // console.log(id);
   categoryId.value = id
 }

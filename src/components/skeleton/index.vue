@@ -22,6 +22,11 @@ defineProps({
     type: Boolean,
     default: false,
   },
+  // 设置透明度
+   opacity: {
+    type: String,
+    default: '1'
+  }
 })
 </script>
 <template>
@@ -85,4 +90,6 @@ defineProps({
     opacity: 1;
   }
 }
+
+
 </style>

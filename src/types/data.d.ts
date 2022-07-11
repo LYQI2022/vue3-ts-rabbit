@@ -90,3 +90,61 @@ export interface TopCategory {
   picture: string;
   children: CategoryItem[];
 }
+
+// 二级分类
+export interface SaleProperty {
+  id: string
+  name: string
+  properties: {
+    id: string
+    name: string
+  }[]
+}
+
+export interface SubCategory {
+  id: string
+  name: string
+  picture?: any
+  parentId: string
+  parentName: string
+  brands: {
+    id: string
+    name: string
+    nameEn: string
+    logo: string
+    picture: string
+    type?: any
+    desc: string
+    place: string
+  }[]
+  saleProperties: SaleProperty[]
+  goods: GoodsItem[]
+}
+
+// 商品详情
+export type GoodsInfo = {
+  id: string
+  name: string
+  spuCode: string
+  desc: string
+  price: string
+  oldPrice: string
+  discount: number
+  inventory: number
+  salesCount: number
+  commentCount: number
+  collectCount: number
+  mainVideos: any[]
+  videoScale: number
+  mainPictures: string[]
+  isPreSale: boolean
+  isCollect?: any
+  recommends?: any
+  userAddresses?: any
+  evaluationInfo?: any
+  categories: {
+    id: string
+    name: string
+  }[]
+}
+
