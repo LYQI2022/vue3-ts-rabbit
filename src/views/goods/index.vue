@@ -6,6 +6,8 @@ import { useRoute } from 'vue-router';
 import GoodsImage from './components/goods-image.vue'
 import GoodsSales from './components/goods-sales.vue';
 import GoodsName from './components/goods-name.vue';
+import GoodsSku from './components/goods-sku.vue';
+import { Spec, ValueItem } from '@/types/data';
 const { goods } = useStore() 
 const route = useRoute()
 watchEffect(() => {
@@ -15,6 +17,14 @@ watchEffect(() => {
 })
 // 解构数据
 const { info } = storeToRefs(goods)
+
+// 修改子组件的数据
+const hChangeSelected = (sub: ValueItem, item: Spec) => {
+  // 排他思想，干掉所有人
+  item.values.forEach(i => i.selected = false)
+  // 点击取反控制高亮
+  sub.selected = !sub.selected
+}
 
 </script>
 <template>
@@ -45,13 +55,14 @@ const { info } = storeToRefs(goods)
         </transition>
       </div>
       <!-- 商品信息 -->
-      <div class="goods-info">
+      <div v-if="goods.info.mainPictures" class="goods-info">
         <div class="media">
-          <GoodsImage v-if="info.mainPictures" :images="info.mainPictures"></GoodsImage>
+          <GoodsImage :images="info.mainPictures"></GoodsImage>
           <GoodsSales />
         </div>
         <div class="spec">
           <GoodsName :goods="info" />
+          <GoodsSku :goods="info" @h-change-selected="hChangeSelected" />
         </div>
       </div>
       <!-- 商品详情 -->

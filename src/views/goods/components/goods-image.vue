@@ -26,7 +26,6 @@ const position = computed(() => {
 })
 </script>
 <template>
-<p>{{ isOutside }}---{{ elementX }}---{{ elementY }}</p>
   <div class="goods-image">
     <div ref="target" class="middle">
       <img

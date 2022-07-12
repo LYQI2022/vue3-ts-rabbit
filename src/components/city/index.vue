@@ -1,34 +1,99 @@
 <script lang="ts" setup name="XtxCity">
-import { ref } from 'vue';
-import axios from 'axios'
-
-const active = ref(false)
-
-type CityItem = {
+export type CityItem = {
   code: string
   level: number
   name: string
   areaList: CityItem[]
 }
 
-const CityList = ref<CityItem[]>([])
-async function getCityList() {
-  const res = await axios.get<CityItem[]>('https://yjy-oss-files.oss-cn-zhangjiakou.aliyuncs.com/tuxian/area.json')
-  console.log(res);
-  CityList.value = res.data
+// 选择的城市结果类型，导出类型必须在最上面
+export type CityResult = {
+  provinceCode: string
+  provinceName: string
+  cityCode: string
+  cityName: string
+  countyCode: string
+  countyName: string
 }
 
+import { ref, watchEffect } from 'vue';
+import axios from 'axios'
+import { onClickOutside } from '@vueuse/core'
+
+const active = ref(false)
+const target = ref(null)
+
+// 获取省份数据
+const cityList = ref<CityItem[]>([])
+const cacheList = ref<CityItem[]>([])
+async function getCityList() {
+  const res = await axios.get<CityItem[]>('https://yjy-oss-files.oss-cn-zhangjiakou.aliyuncs.com/tuxian/area.json')
+  // console.log(res);
+  cityList.value = res.data
+  cacheList.value = res.data
+}
 getCityList()
+
+// 接收父组件传递的默认省市县信息
+defineProps<{
+  address: string
+}>()
+
+// 点击区域外时触发的事件
+onClickOutside(target, () => {
+  // console.log('点击了');
+  active.value = false
+})
+
+// 创建省市县的变量
+const cityResultList = ref<CityResult>({} as CityResult)
+// 定义子传父
+const emit = defineEmits<{
+  (e: 'changeCity', city: CityResult): void
+}>()
+
+// 点击省市县
+const selectCity = (city: CityItem) => {
+  console.log(city.name);
+  // 没有子级就退出模块
+  // 确定省信息
+  if (city.level === 0) {
+    cityResultList.value.provinceName = city.name
+    cityResultList.value.provinceCode = city.code
+  }
+  // 确定市信息
+  if (city.level === 1) {
+    cityResultList.value.cityName = city.name
+    cityResultList.value.cityCode = city.code
+  }
+  // 确定县信息
+  if (city.level === 2) {
+    cityResultList.value.countyName = city.name
+    cityResultList.value.countyCode = city.code
+    // 传值给父组件
+    emit('changeCity', cityResultList.value)
+  }
+
+  if (!city.areaList) return active.value = false
+  cityList.value = city.areaList
+}
+
+// 监听 active 的改变，重新输入省级城市
+watchEffect(() => {
+  if (!active.value) cityList.value = cacheList.value
+})
+
 </script>
 <template>
-  <div class="xtx-city">
+  <div ref="target" class="xtx-city">
     <div @click="active = !active" :class="{ active }" class="select">
-      <span class="placeholder">请选择配送地址</span>
+      <span v-if="address" class="placeholder">{{ address }}</span>
+      <span v-else class="placeholder">请选择配送地址</span>
       <span class="value"></span>
       <i class="iconfont icon-angle-down"></i>
     </div>
     <div v-show="active" class="option">
-      <span class="ellipsis" v-for="item in CityList" :key="item.name">{{ item.name }}</span>
+      <span @click="selectCity(item)" class="ellipsis" v-for="item in cityList" :key="item.name">{{ item.name }}</span>
     </div>
   </div>
 </template>
