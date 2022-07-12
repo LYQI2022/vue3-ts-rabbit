@@ -4,6 +4,7 @@ import XtxCarousel from '@/components/carousel/index.vue'
 import XtxMore from '@/components/more/index.vue'
 import XtxBread from './Bread/index.vue'
 import XtxBreadItem from './Bread/Item.vue'
+import XtxCity from './city/index.vue'
 import { useIntersectionObserver } from '@vueuse/core'
 // 引入图片
 import defaultImg from '@/assets/images/200.png'
@@ -15,6 +16,7 @@ export default {
     app.component(XtxMore.name, XtxMore)
     app.component(XtxBread.name, XtxBread)
     app.component(XtxBreadItem.name, XtxBreadItem)
+    app.component(XtxCity.name, XtxCity)
 
     // 全局注册自定义指令
     app.directive('lazy', {
