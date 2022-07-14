@@ -1,13 +1,15 @@
 <script lang="ts" setup>
 import useStore from '@/store';
 import { storeToRefs } from 'pinia';
-import { watchEffect } from 'vue';
+import { ref, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
 import GoodsImage from './components/goods-image.vue'
 import GoodsSales from './components/goods-sales.vue';
 import GoodsName from './components/goods-name.vue';
 import GoodsSku from './components/goods-sku.vue';
 import { Spec, ValueItem } from '@/types/data';
+import GoodsDetail from './components/goods-detail.vue';
+import GoodsHot from './components/goods-hot.vue';
 const { goods } = useStore() 
 const route = useRoute()
 watchEffect(() => {
@@ -19,12 +21,30 @@ watchEffect(() => {
 const { info } = storeToRefs(goods)
 
 // 修改子组件的数据
-const hChangeSelected = (sub: ValueItem, item: Spec) => {
-  // 排他思想，干掉所有人
-  item.values.forEach(i => i.selected = false)
-  // 点击取反控制高亮
-  sub.selected = !sub.selected
+// sub 是当前点击的条目
+// item 是当前点击的条目所属的规格
+// const hChangeSelected = (sub: ValueItem, item: Spec) => {
+//   // 被禁用就不能被选中
+//   if (sub.disabled) return
+//   // 排他思想，干掉除了我之外的所有人
+//   item.values.filter(v => v.name !== sub.name).forEach(i => i.selected = false)
+//   // 点击取反控制高亮
+//   sub.selected = !sub.selected
+// }
+
+const hChangeSku = (skuId: string) => {
+  // console.log('父组件得到的 skuId:', skuId)
+  // 根据 skuId 找到 sku 对象
+  const sku = goods.info.skus.find(item => item.id === skuId)
+  // console.log(sku)
+  // 找不到就 return
+  if (!sku) return
+  // 修改商品价格 (此处应该定义 pinia 中的 actions 后修改)
+  goods.info.price = sku.price
+  goods.info.oldPrice = sku.oldPrice
 }
+
+const count = ref(1)
 
 </script>
 <template>
@@ -62,17 +82,26 @@ const hChangeSelected = (sub: ValueItem, item: Spec) => {
         </div>
         <div class="spec">
           <GoodsName :goods="info" />
-          <GoodsSku :goods="info" @h-change-selected="hChangeSelected" />
+          <!-- <GoodsSku sku-id="1369155864430120962" :goods="info" @h-change-selected="hChangeSelected" /> -->
+          <GoodsSku @change-sku="hChangeSku" sku-id="1369155864430120962" :goods="info" />
+          <XtxNumbox v-model="count" show-label :min="1" :max="info.inventory" />
+          <XtxButton type="primary" style="margin-top: 20px;">加入购物车</XtxButton>
         </div>
       </div>
       <!-- 商品详情 -->
-      <div class="goods-footer">
+      <div class="goods-footer" v-if="info.details">
         <div class="goods-article">
           <!-- 商品+评价 -->
-          <div class="goods-tabs"></div>
+          <div class="goods-tabs">
+            <GoodsDetail :goods="info" />
+          </div>
         </div>
         <!-- 24热榜+专题推荐 -->
-        <div class="goods-aside"></div>
+        <div class="goods-aside">
+          <GoodsHot :type="1" />
+          <GoodsHot :type="2" />
+          <GoodsHot :type="3" />
+        </div>
       </div>
     </div>
   </div>
@@ -91,6 +120,18 @@ const hChangeSelected = (sub: ValueItem, item: Spec) => {
   .spec {
     flex: 1;
     padding: 30px 30px 30px 0;
+  }
+}
+.goods-footer {
+  display: flex;
+  margin-top: 20px;
+  .goods-article {
+    width: 940px;
+    margin-right: 20px;
+  }
+  .goods-aside {
+    width: 280px;
+    min-height: 1000px;
   }
 }
 .goods-footer {

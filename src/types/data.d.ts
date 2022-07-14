@@ -148,6 +148,7 @@ export type GoodsInfo = {
   }[]
   specs: Spec[]
   skus: SkuItem[]
+  details: GoodsDetail
 }
 
 export type Spec = {
@@ -161,6 +162,7 @@ export type ValueItem = {
   name: string
   picture: string
   selected: boolean
+  disabled: boolean
 }
 
 export type SkuItem = {
@@ -172,5 +174,13 @@ export type SkuItem = {
   specs: {
     name: string
     valueName: string
+  }[]
+}
+
+type GoodsDetail = {
+  pictures: string[]
+  properties: {
+    name: string
+    value: string
   }[]
 }
